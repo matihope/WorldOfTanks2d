@@ -10,6 +10,7 @@ class Network:
         self.port = 5555
         self.addr = (self.server, self.port)
         self.id = self.connect()
+        self.id_send = False
 
     def getId(self):
         self.id_send = True

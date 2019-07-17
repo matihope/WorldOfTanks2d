@@ -19,7 +19,7 @@ class GameWindow(pyglet.window.Window):
         self.push_handlers(self.keys)
 
         self.current_screen = 0  # 0=Menu, 1=Game
-        self.ip = '192.168.56.1'
+        self.ip = '192.168.0.11'
         self.port = 5555
         self.n = None
         self.this_client_id = 0
@@ -70,17 +70,16 @@ class GameWindow(pyglet.window.Window):
         self.dt = dt
         self.FPS_label.text = str(self.FPS)
 
-            # Menu
+        # Menu
         if self.current_screen == 0:
             [button.refresh(self.mouse_x, self.mouse_y, self.mouse_left_is_pressed) for button in self.buttons.values()]
-            # Game
+        # Game
         if self.current_screen == 1:
             if self.game_mode == 'OFFLINE':
                 self.player1.step(self.keys, dt)
                 self.player2.step(self.keys, dt)
             else:
                 self.player1.step(self.keys, dt)
-                # self.n.trade(self.player1, self)
 
         # 176 102
 
@@ -91,12 +90,12 @@ class GameWindow(pyglet.window.Window):
         glClearColor(46 / 255, 46 / 255, 49 / 255, 0.2)  # Bg Color
 
         # To draw
-            # Menu
+        # Menu
         if self.current_screen == 0:
-            [button.draw() for button in self.buttons.values()]
+            [b.draw() for b in self.buttons.values()]
             self.handle_buttons()
 
-            # Game
+        # Game
         if self.current_screen == 1:
             self.main_batch.draw()
             self.add_ons_1.draw()
@@ -160,8 +159,12 @@ class GameWindow(pyglet.window.Window):
 
         if self.buttons['play'].click:
             if self.game_mode == 'OFFLINE':
-                self.player1 = player.Player(self.tank_image.anchor_x, self.height-self.tank_image.anchor_y, self.p1_tank_type, 0, self.height, img=self.tank_image, batch=self.main_batch)
-                self.player2 = player.Player(self.width-self.tank_image.anchor_x, self.tank_image.anchor_y, self.p2_tank_type, 1, self.height, img=self.tank_image, batch=self.main_batch)
+                self.player1 = player.Player(self.tank_image.anchor_x, self.height-self.tank_image.anchor_y,
+                                             self.p1_tank_type, 0, self.game_mode, self.height,
+                                             img=self.tank_image, batch=self.main_batch)
+                self.player2 = player.Player(self.width-self.tank_image.anchor_x, self.tank_image.anchor_y,
+                                             self.p2_tank_type, 1, self.game_mode, self.height, img=self.tank_image,
+                                             batch=self.main_batch)
                 self.current_screen = 1
             else:
                 if self.ip is not None:
@@ -171,9 +174,13 @@ class GameWindow(pyglet.window.Window):
                     print(self.this_client_id)
 
                     if self.this_client_id == 0:
-                        self.player1 = player.Player(self.tank_image.anchor_x, self.height-self.tank_image.anchor_y, self.p1_tank_type, 0, self.height, img=self.tank_image, batch=self.main_batch)
+                        self.player1 = player.Player(self.tank_image.anchor_x, self.height-self.tank_image.anchor_y,
+                                                     self.p1_tank_type, 0, self.game_mode, self.height,
+                                                     img=self.tank_image, batch=self.main_batch)
                     else:
-                        self.player1 = player.Player(self.width-self.tank_image.anchor_x, self.tank_image.anchor_y, self.p1_tank_type, 1, self.height, img=self.tank_image, batch=self.main_batch)
+                        self.player1 = player.Player(self.width-self.tank_image.anchor_x, self.tank_image.anchor_y,
+                                                     self.p1_tank_type, 1, self.game_mode, self.height,
+                                                     img=self.tank_image, batch=self.main_batch)
                     
                     self.n.send_player(self.player1)
                     self.n.p2(self)

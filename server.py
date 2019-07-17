@@ -3,11 +3,11 @@ import pickle
 from _thread import *
 import threading
 import sys
-from modules import player, mystrip
+from modules import mystrip
 import time
 
 
-server = '192.168.56.1'
+server = '192.168.0.11'
 port = 5555
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -52,35 +52,48 @@ def threaded_client(conn, p, gameId):
                     break
                 else:
                     if p == 0:
-                        game['p2'] = data
+                        mystrip.server_strip(game['p2'], data)
                         conn.send(pickle.dumps(game['p1']))
-                        if game['p1'].ready_to_shot:
-                            print('Shot P1')
                     else:
-                        game['p1'] = data
+                        mystrip.server_strip(game['p1'], data)
                         conn.send(pickle.dumps(game['p2']))
-                        if game['p2'].ready_to_shot:
-                            print('Shot P2')
 
             else:
                 break
         except:
             break
-    print('Lost connection')
+    print(f'Lost connection with P:{p}')
     try:
-        del games[gameId]
-        print('Closing game..', gameId)
-    except:
+        games[gameId]['end'] = True
+    except KeyError:
         pass
+    print('Closing game: ', gameId)
+
     idCount -= 1
     conn.close()
 
 
-def run_game(gameId):
-    if games[gameId]['p1'] is not None and \
-            games[gameId]['p2'] is not None:
-        while 'games[gameId]' in globals():
-            pass
+def run_game(gameId, FPS=60):
+    g = games[gameId]
+    while g['p1'] is None or g['p2'] is None:
+        # Wait till the players are connected
+        pass
+
+    prev_time = time.perf_counter()
+    while not g['end']:
+        dt = time.perf_counter() - prev_time
+        dfix = FPS * dt  # Delay fix
+
+        if g['p1'].ready_to_shot:
+            print('Player1 shot!')
+        if g['p2'].ready_to_shot:
+            print('Player2 shot!')
+
+        prev_time = time.perf_counter()
+        time.sleep(1/FPS)
+
+    del games[gameId]
+    print('Game stop')
 
 
 while True:
@@ -91,9 +104,8 @@ while True:
     p = 0
     gameId = (idCount - 1)//2
     if idCount % 2 == 1:
-        games[gameId] = {'p1': None, 'p2': None, 'p1_bullet': None, 'p2_bullet': None}
-        # Thread and stripping here
-        threading.Thread(target=run_game, args=(gameId, ))
+        games[gameId] = {'p1': None, 'p2': None, 'p1_bullet': None, 'p2_bullet': None, 'end': False}
+        threading.Thread(target=run_game, args=(gameId, )).start()
         print('Creating a new game...')
     else:
         p = 1
