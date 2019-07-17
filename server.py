@@ -93,7 +93,7 @@ def run_game(gameId, FPS=60):
         time.sleep(1/FPS)
 
     del games[gameId]
-    print('Game stop')
+    print('Game stop!')
 
 
 while True:
