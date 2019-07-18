@@ -24,6 +24,7 @@ class Player(pyglet.sprite.Sprite):
 
         self.tank_type = tank_type
         self.remaining_reload = 0
+        self.gun_is_reloaded = True
         self.ready_to_shot = False
 
         if self.tank_type == 'HEAVY':
@@ -40,30 +41,30 @@ class Player(pyglet.sprite.Sprite):
 
     def step(self, keys, dt):
         self.dt = dt
-        self.ready_to_shot = False
 
         if len(keys) > 0:
             self.move(keys)
 
-        shot = False
+        key_shot = False
         if self.game_mode == 'OFFLINE':
             if (self.player_id == 0 and (keys[key.SPACE] or keys[key.D])) or \
                (self.player_id == 1 and keys[key.J]):
-                shot = True
+                key_shot = True
         else:
             if keys[key.SPACE] or keys[key.D]:
-                shot = True
+                key_shot = True
 
-        if shot:
-            if self.remaining_reload <= 0:
-                self.shot()
-                self.remaining_reload = self.reload
-                threading.Thread(target=self.reloading).start()
+        if key_shot and self.gun_is_reloaded:
+            self.gun_is_reloaded = False
+            self.shot()
+            self.remaining_reload = self.reload
+            threading.Thread(target=self.reloading).start()
 
     def reloading(self):
         while self.remaining_reload > 0:
             self.remaining_reload -= self.dt
             time.sleep(self.dt)
+        self.gun_is_reloaded = True
         print('Reloaded!')
 
     def move(self, keys):

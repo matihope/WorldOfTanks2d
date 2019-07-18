@@ -86,8 +86,10 @@ def run_game(gameId, FPS=60):
 
         if g['p1'].ready_to_shot:
             print('Player1 shot!')
+            g['p1'].ready_to_shot = False
         if g['p2'].ready_to_shot:
             print('Player2 shot!')
+            g['p2'].ready_to_shot = False
 
         prev_time = time.perf_counter()
         time.sleep(1/FPS)
@@ -105,7 +107,7 @@ while True:
     gameId = (idCount - 1)//2
     if idCount % 2 == 1:
         games[gameId] = {'p1': None, 'p2': None, 'p1_bullet': None, 'p2_bullet': None, 'end': False}
-        threading.Thread(target=run_game, args=(gameId, )).start()
+        threading.Thread(target=run_game, args=(gameId, 60)).start()
         print('Creating a new game...')
     else:
         p = 1
