@@ -47,8 +47,8 @@ def place_meeting(x, y, b, p):  # For predicting the position
 
 def objects_are_colliding(obj1, obj2):
     """
-    :param obj1: pyglet obj
-    :param obj2:
+    :param obj1: child of pyglet.sprite.Sprite
+    :param obj2: child of pyglet.sprite.Sprite
     :return:
     """
     x, y = obj1.x, obj1.y

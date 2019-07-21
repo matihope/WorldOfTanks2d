@@ -1,6 +1,6 @@
 import pyglet
 from pyglet.window import key, mouse
-from modules import player, button, network
+from modules import player, button, network, bullet
 from pyglet.gl import *
 import threading
 import time
@@ -29,6 +29,9 @@ class GameWindow(pyglet.window.Window):
         self.p2_tank_type = 'HEAVY'
 
         self.dt = 1
+        self.fixDt = 0
+        self.FPS = 0
+        self.desired_FPS = 60
 
         self.menu_batch = pyglet.graphics.Batch()
         self.main_batch = pyglet.graphics.Batch()
@@ -48,10 +51,15 @@ class GameWindow(pyglet.window.Window):
 
         self.tank_image = pyglet.resource.image('tank.png')
         center_image(self.tank_image)
+
+        self.bullet_image = pyglet.resource.image('bullet.png')
+        center_image(self.bullet_image)
         
         # CREATING PLAYERS IN BUTTON HANDLING
         self.player1 = None
         self.player2 = None
+
+        self.bullet_list = []
 
         self.buttons = {
             'set_ip': button.Button('button.png', self.ip if self.ip is not None else 'Set IP', x=self.width/2, y=500),
@@ -64,10 +72,11 @@ class GameWindow(pyglet.window.Window):
         self.buttons['set_ip'].visible = False
 
         threading.Thread(target=self.FPS_COUNTER).start()
-        pyglet.clock.schedule_interval(self.game_tick, 1/120)
+        pyglet.clock.schedule_interval(self.game_tick, 1/self.desired_FPS)
 
     def game_tick(self, dt):
         self.dt = dt
+        self.fixDt = self.desired_FPS * dt
         self.FPS_label.text = str(self.FPS)
 
         # Menu
@@ -78,8 +87,20 @@ class GameWindow(pyglet.window.Window):
             if self.game_mode == 'OFFLINE':
                 self.player1.step(self.keys, dt)
                 self.player2.step(self.keys, dt)
+
+                # Player2 shot
+                if self.player2.ready_to_shot:
+                    self.bullet_list.append(bullet.Bullet(self.player2, img=self.bullet_image, batch=self.main_batch))
             else:
                 self.player1.step(self.keys, dt)
+
+            # Refreshing bullets
+            [b.step(self.fixDt, self.player1 if b.player_id == self.player2.player_id else self.player2) for b in
+             self.bullet_list]
+
+            # Player1 shot
+            if self.player1.ready_to_shot:
+                self.bullet_list.append(bullet.Bullet(self.player1, img=self.bullet_image, batch=self.main_batch))
 
         # 176 102
 
@@ -127,7 +148,7 @@ class GameWindow(pyglet.window.Window):
         while not self.has_exit:
             FPS_.remove(FPS_[0])
             FPS_.append(1/self.dt)
-            self.FPS = round( float(sum(FPS_)) / max(len(FPS_), 1) )  # Average of FPS
+            self.FPS = round(float(sum(FPS_)) / max(len(FPS_), 1))  # Average of FPS
             time.sleep(1)
 
     def handle_buttons(self):

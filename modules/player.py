@@ -40,6 +40,7 @@ class Player(pyglet.sprite.Sprite):
             self.bulletspeed = 7
 
     def step(self, keys, dt):
+        self.ready_to_shot = False
         self.dt = dt
 
         if len(keys) > 0:
