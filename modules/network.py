@@ -42,6 +42,3 @@ class Network:
             return mystrip.un_stripLite(pickle.loads(self.client.recv(1024)), client)
         except socket.error as e:
             print(e)
-        except:
-            exit()
-

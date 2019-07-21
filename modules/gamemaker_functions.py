@@ -55,13 +55,17 @@ def objects_are_colliding(obj1, obj2):
     x -= obj1.image.anchor_x
     y -= obj1.image.anchor_y
 
-    if x + obj1.width < obj2.x:
+    x2, y2 = obj2.x, obj2.y
+    x2 -= obj2.image.anchor_x
+    y2 -= obj2.image.anchor_y
+
+    if x + obj1.width < x2:
         return False
-    if x > obj2.x + obj2.width:
+    if x > x2 + obj2.width:
         return False
-    if y + obj1.height < obj2.y:
+    if y + obj1.height < y2:
         return False
-    if y > obj2.y + obj2.height:
+    if y > y2 + obj2.height:
         return False
     return True
 

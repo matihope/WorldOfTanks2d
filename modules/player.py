@@ -1,6 +1,5 @@
 import pyglet
-from pyglet.window import key, mouse
-# from bullet import Bullet
+from pyglet.window import key
 import threading
 import time
 

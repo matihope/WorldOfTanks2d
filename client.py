@@ -72,7 +72,7 @@ class GameWindow(pyglet.window.Window):
         self.buttons['set_ip'].visible = False
 
         threading.Thread(target=self.FPS_COUNTER).start()
-        pyglet.clock.schedule_interval(self.game_tick, 1/self.desired_FPS)
+        pyglet.clock.schedule_interval(self.game_tick, 1/250)
 
     def game_tick(self, dt):
         self.dt = dt
@@ -91,18 +91,28 @@ class GameWindow(pyglet.window.Window):
                 # Player2 shot
                 if self.player2.ready_to_shot:
                     self.bullet_list.append(bullet.Bullet(self.player2, img=self.bullet_image, batch=self.main_batch))
+
+                for b in self.bullet_list:
+                    if b.hit:
+                        if b.player_id == 0:
+                            self.player1.hp -= b.dmg
+                        else:
+                            self.player2.hp -= b.dmg
+                        self.bullet_list.remove(b)
             else:
                 self.player1.step(self.keys, dt)
+                for b in self.bullet_list:
+                    if b.hit:
+                        self.bullet_list.remove(b)
 
             # Refreshing bullets
             [b.step(self.fixDt, self.player1 if b.player_id == self.player2.player_id else self.player2) for b in
              self.bullet_list]
-
             # Player1 shot
             if self.player1.ready_to_shot:
                 self.bullet_list.append(bullet.Bullet(self.player1, img=self.bullet_image, batch=self.main_batch))
 
-        # 176 102
+        # 180 100
 
         self.draw_elements()
 
@@ -207,7 +217,6 @@ class GameWindow(pyglet.window.Window):
                     self.n.p2(self)
 
                     self.current_screen = 1
-
                     threading.Thread(target=self.trade_info).start()
 
                 else:
