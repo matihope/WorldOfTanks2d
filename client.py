@@ -58,7 +58,6 @@ class GameWindow(pyglet.window.Window):
         # CREATING PLAYERS IN BUTTON HANDLING
         self.player1 = None
         self.player2 = None
-        self.p2_ready_to_shot = False
 
         self.bullet_list = []
 
@@ -102,21 +101,34 @@ class GameWindow(pyglet.window.Window):
                         self.bullet_list.remove(b)
             else:
                 self.player1.step(self.keys, dt)
+
                 for b in self.bullet_list:
                     if b.hit:
+                        if b.player_id != self.player1.player_id:
+                            self.player1.hp -= b.dmg
                         self.bullet_list.remove(b)
 
                 if self.player2.ready_to_shot:
                     self.make_enemy_bullet()
 
             # Refreshing bullets
-            [b.step(self.fixDt, self.player1 if b.player_id == self.player2.player_id else self.player2) for b in
-             self.bullet_list]
+            for b in self.bullet_list:
+                b.step(self.fixDt, self.player1 if b.player_id == self.player2.player_id else self.player2)
+                if not (0 < b.x < self.width):
+                    self.bullet_list.remove(b)
+
             # Player1 shot
             if self.player1.ready_to_shot:
                 self.bullet_list.append(bullet.Bullet(self.player1, img=self.bullet_image, batch=self.main_batch))
 
-        # 180 100
+            # 180 100
+            if self.player1.hp <= 0 or self.player2.hp <= 0:
+                self.current_screen = 0
+                winner = 'ENEMY WON :(' if self.player1.hp <= 0 else 'YOU WON!'
+                self.player1 = None
+                self.player2 = None
+                [b.refresh(self.mouse_x, self.mouse_y, self.mouse_left_is_pressed) for b in self.buttons.values()]
+                self.threaded_msg(winner, 3)
 
         self.draw_elements()
 
@@ -132,6 +144,8 @@ class GameWindow(pyglet.window.Window):
 
         # Game
         if self.current_screen == 1:
+            self.player1.draw()
+            self.player2.draw()
             self.main_batch.draw()
             self.add_ons_1.draw()
 
@@ -195,11 +209,9 @@ class GameWindow(pyglet.window.Window):
         if self.buttons['play'].click:
             if self.game_mode == 'OFFLINE':
                 self.player1 = player.Player(self.tank_image.anchor_x, self.height-self.tank_image.anchor_y,
-                                             self.p1_tank_type, 0, self.game_mode, self.height,
-                                             img=self.tank_image, batch=self.main_batch)
+                                             self.p1_tank_type, 0, self.game_mode, self.height, img=self.tank_image)
                 self.player2 = player.Player(self.width-self.tank_image.anchor_x, self.tank_image.anchor_y,
-                                             self.p2_tank_type, 1, self.game_mode, self.height, img=self.tank_image,
-                                             batch=self.main_batch)
+                                             self.p2_tank_type, 1, self.game_mode, self.height, img=self.tank_image)
                 self.current_screen = 1
             else:
                 if self.ip is not None:
@@ -210,12 +222,12 @@ class GameWindow(pyglet.window.Window):
 
                     if self.this_client_id == 0:
                         self.player1 = player.Player(self.tank_image.anchor_x, self.height-self.tank_image.anchor_y,
-                                                     self.p1_tank_type, 0, self.game_mode, self.height,
-                                                     img=self.tank_image, batch=self.main_batch)
+                                                     self.p1_tank_type, 0, self.game_mode, self.height, in_online_main_player=True,
+                                                     img=self.tank_image)
                     else:
                         self.player1 = player.Player(self.width-self.tank_image.anchor_x, self.tank_image.anchor_y,
-                                                     self.p1_tank_type, 1, self.game_mode, self.height,
-                                                     img=self.tank_image, batch=self.main_batch)
+                                                     self.p1_tank_type, 1, self.game_mode, self.height, in_online_main_player=True,
+                                                     img=self.tank_image)
                     
                     self.n.send_player(self.player1)
                     self.n.p2(self)
@@ -237,12 +249,16 @@ class GameWindow(pyglet.window.Window):
 
     def trade_info(self):
         while not self.has_exit:
-            self.n.trade(self.player1, self)
+            try:
+                self.n.trade(self.player1, self)
+                if self.player1.hp >= 0:
+                    pass
+            except AttributeError:
+                break
 
     def make_enemy_bullet(self):
         self.bullet_list.append(bullet.Bullet(self.player2, img=self.bullet_image, batch=self.main_batch))
         self.player2.ready_to_shot = False
-        print('Made a enemy\'s bullet!')
 
 
 def center_image(image):

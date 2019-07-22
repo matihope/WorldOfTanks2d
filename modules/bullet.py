@@ -1,5 +1,6 @@
 import pyglet
 from modules import gamemaker_functions as gmf
+import random
 
 
 class Bullet(pyglet.sprite.Sprite):
@@ -9,7 +10,7 @@ class Bullet(pyglet.sprite.Sprite):
         self.y = player.y
         self.player_id = player.player_id
         self.spd = player.bulletspeed
-        self.dmg = player.dmg
+        self.dmg = int(player.dmg * (random.randint(75, 125)/100))
         self.hit = False
         if self.player_id == 1:
             self.scale_x = -1

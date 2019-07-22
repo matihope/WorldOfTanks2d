@@ -55,6 +55,9 @@ def threaded_client(conn, p, gameId):
                         mystrip.server_strip(game['p2'], data)
                         conn.send(pickle.dumps(game['p1']))
 
+                if game['p1'].hp <= 0 or game['p2'].hp <= 0:
+                    break
+
             else:
                 break
         except:
