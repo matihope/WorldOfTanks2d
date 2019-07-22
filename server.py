@@ -51,11 +51,9 @@ def threaded_client(conn, p, gameId):
                     if p == 0:
                         mystrip.server_strip(game['p1'], data)
                         conn.send(pickle.dumps(game['p2']))
-                        game['p2'].ready_to_shot = False
                     else:
                         mystrip.server_strip(game['p2'], data)
                         conn.send(pickle.dumps(game['p1']))
-                        game['p1'].ready_to_shot = False
 
             else:
                 break

@@ -58,6 +58,7 @@ class GameWindow(pyglet.window.Window):
         # CREATING PLAYERS IN BUTTON HANDLING
         self.player1 = None
         self.player2 = None
+        self.p2_ready_to_shot = False
 
         self.bullet_list = []
 
@@ -104,6 +105,9 @@ class GameWindow(pyglet.window.Window):
                 for b in self.bullet_list:
                     if b.hit:
                         self.bullet_list.remove(b)
+
+                if self.player2.ready_to_shot:
+                    self.make_enemy_bullet()
 
             # Refreshing bullets
             [b.step(self.fixDt, self.player1 if b.player_id == self.player2.player_id else self.player2) for b in
@@ -234,6 +238,11 @@ class GameWindow(pyglet.window.Window):
     def trade_info(self):
         while not self.has_exit:
             self.n.trade(self.player1, self)
+
+    def make_enemy_bullet(self):
+        self.bullet_list.append(bullet.Bullet(self.player2, img=self.bullet_image, batch=self.main_batch))
+        self.player2.ready_to_shot = False
+        print('Made a enemy\'s bullet!')
 
 
 def center_image(image):

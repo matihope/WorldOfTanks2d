@@ -1,4 +1,4 @@
-from modules import player, bullet
+from modules import player
 
 
 class PlayerInit(object):
@@ -12,7 +12,7 @@ class PlayerInit(object):
         self.dmg = p.dmg
         self.bulletspeed = p.bulletspeed
         self.ready_to_shot = p.ready_to_shot
-        self.gun_is_reloaded = p.ready_to_shot
+        self.gun_is_reloaded = p.gun_is_reloaded
 
 
 class PlayerLite(object):
@@ -38,13 +38,10 @@ def un_stripInit(p, self):
 
 def un_stripLite(player, self):
     self.player2.y = player.y
-    if player.ready_to_shot:
-        self.bullet_list.append(bullet.Bullet(self.player2,
-                                              img=self.bullet_image, batch=self.main_batch))  # Other player's bullet
-        print('Made a enemy\'s bullet!')
+    self.player2.ready_to_shot = True if self.player2.gun_is_reloaded and not player.gun_is_reloaded else self.player2.ready_to_shot
+    self.player2.gun_is_reloaded = player.gun_is_reloaded
 
 
 def server_strip(p_old, p_new):
     p_old.y = p_new.y
-    p_old.ready_to_shot = True if not p_new.gun_is_reloaded and p_old.gun_is_reloaded else p_old.ready_to_shot
     p_old.gun_is_reloaded = p_new.gun_is_reloaded
