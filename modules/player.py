@@ -48,6 +48,16 @@ class Player(pyglet.sprite.Sprite):
                                         font_name='Born2bSportyV2', font_size=16, color=color)
         self.hp_lbl.x = self.x - (20 * self.scale_x)
 
+        self.hit_lbl = pyglet.text.Label(text='', anchor_x='center', anchor_y='center',
+                                         font_name='Born2bSportyV2', font_size=16, color=(255, 200, 200, 255))
+        self.hit_lbl.x = self.hp_lbl.x
+        self.hit_lbl_life_span = 1.5  # In seconds
+        self.hit_lbl_life_left = 0
+
+        self.reload_lbl = pyglet.text.Label(text='', anchor_x='left', anchor_y='center',
+                                            font_name='Born2bSportyV2', font_size=16, color=(255, 200, 200, 255))
+        self.reload_lbl.x = self.x + (64 if self.scale_x == 1 else -92)
+
     def step(self, keys, dt):
         self.ready_to_shot = False
         self.dt = dt
@@ -95,10 +105,39 @@ class Player(pyglet.sprite.Sprite):
         self.ready_to_shot = True
 
     def update_labels(self):
+        # Dealing dmg
+        if self.hp != self.prev_hp:
+            dmg = self.prev_hp - self.hp
+            self.prev_hp = self.hp
+
+            self.hit_lbl.text = str(-dmg)
+            self.hit_lbl_life_left = self.hit_lbl_life_span
+
+        if self.hit_lbl.text != '':
+            self.hit_lbl_life_left -= 1/60
+
         self.hp_lbl.y = min(self.window_height-20, round(self.y) + 85)
         self.hp_lbl.text = f'{self.hp}/{self.hp_max}'
 
+        self.hit_lbl.y = round(self.y) + 20
+        if self.hit_lbl_life_left <= 0:
+            self.hit_lbl.text = ''
+
+        if self.in_online_main_player or self.game_mode == 'OFFLINE':
+            self.reload_lbl.y = round(self.y) + 50
+            if self.gun_is_reloaded:
+                self.reload_lbl.text = 'R'
+                self.reload_lbl.color = (50, 200, 50, 255)
+            else:
+                self.reload_lbl.text = str(round(self.remaining_reload * 100) / 100)
+                c = round((150 * self.remaining_reload/self.reload))
+                self.reload_lbl.color = (50 + c, 200 - c, 50, 255)
+
     def draw(self):
+        self.hp = max(self.hp, 0)
         super(Player, self).draw()
         self.update_labels()
         self.hp_lbl.draw()
+        self.hit_lbl.draw()
+        if self.in_online_main_player:
+            self.reload_lbl.draw()

@@ -58,6 +58,8 @@ class GameWindow(pyglet.window.Window):
         # CREATING PLAYERS IN BUTTON HANDLING
         self.player1 = None
         self.player2 = None
+        self.end_the_game = False
+        self.drawn_end_screen = False
 
         self.bullet_list = []
 
@@ -122,15 +124,14 @@ class GameWindow(pyglet.window.Window):
                 self.bullet_list.append(bullet.Bullet(self.player1, img=self.bullet_image, batch=self.main_batch))
 
             # 180 100
-            if self.player1.hp <= 0 or self.player2.hp <= 0:
-                self.current_screen = 0
-                winner = 'ENEMY WON :(' if self.player1.hp <= 0 else 'YOU WON!'
-                self.player1 = None
-                self.player2 = None
-                [b.refresh(self.mouse_x, self.mouse_y, self.mouse_left_is_pressed) for b in self.buttons.values()]
-                self.threaded_msg(winner, 3)
 
         self.draw_elements()
+        if self.end_the_game:
+            self.end_the_game = False
+            self.player1 = None
+            self.player2 = None
+            self.bullet_list = []
+            self.current_screen = 0
 
     def draw_elements(self):
         self.clear()
@@ -144,13 +145,22 @@ class GameWindow(pyglet.window.Window):
 
         # Game
         if self.current_screen == 1:
-            self.player1.draw()
-            self.player2.draw()
+            try:
+                self.player1.draw()
+                self.player2.draw()
+            except AttributeError:
+                pass
             self.main_batch.draw()
             self.add_ons_1.draw()
 
         self.message_label.text = self.text_for_message_label
         self.message_label.draw()
+
+        if self.drawn_end_screen:
+            self.drawn_end_screen = False
+            time.sleep(3)
+        if self.end_the_game:
+            self.drawn_end_screen = True
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == mouse.LEFT:
@@ -248,13 +258,21 @@ class GameWindow(pyglet.window.Window):
         self.text_for_message_label = ''
 
     def trade_info(self):
-        while not self.has_exit:
+        end = False
+        while not end and not self.has_exit:
             try:
                 self.n.trade(self.player1, self)
-                if self.player1.hp >= 0:
-                    pass
+                if self.player1.hp <= 0 or self.player2.hp <= 0:
+                    winner = 'ENEMY WON :(' if self.player1.hp <= 0 else 'YOU WON!'
+                    self.text_for_message_label = winner
+                    self.display_message(winner, 3)
+                    end = True
             except AttributeError:
                 break
+        self.n.trade(self.player1, self)
+        time.sleep(1/130)
+        self.n = None
+        self.end_the_game = True
 
     def make_enemy_bullet(self):
         self.bullet_list.append(bullet.Bullet(self.player2, img=self.bullet_image, batch=self.main_batch))

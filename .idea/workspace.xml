@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78e7f3cb-a67b-4755-91fc-acee389bd1cf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/bullet.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/bullet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/mystrip.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/mystrip.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/player.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
@@ -16,11 +15,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="55" column="59" lean-forward="true" selection-start-line="55" selection-start-column="59" selection-end-line="55" selection-end-column="59" />
+            <state relative-caret-position="846">
+              <caret line="47" column="27" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="27" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -28,21 +27,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="251" column="35" selection-start-line="251" selection-start-column="32" selection-end-line="251" selection-end-column="35" />
+            <state relative-caret-position="324">
+              <caret line="109" column="52" selection-start-line="109" selection-start-column="52" selection-end-line="109" selection-end-column="52" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <element signature="e#5156#5226#0" />
-                <element signature="e#5293#5364#0" />
-                <element signature="e#5419#5452#0" />
-                <element signature="e#5525#5613#0" />
-                <element signature="e#5650#5980#0" />
-                <element signature="e#9446#9517#0" />
-                <element signature="e#9567#9698#0" />
-                <element signature="e#9846#10028#0" />
               </folding>
             </state>
           </provider>
@@ -52,7 +43,7 @@
         <entry file="file://$PROJECT_DIR$/modules/bullet.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="198">
-              <caret line="11" column="37" lean-forward="true" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
+              <caret line="11" column="37" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -72,8 +63,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="721">
-              <caret line="90" column="12" selection-start-line="90" selection-start-column="12" selection-end-line="90" selection-end-column="12" />
+            <state relative-caret-position="1945">
+              <caret line="116" column="42" selection-start-line="116" selection-start-column="42" selection-end-line="116" selection-end-column="42" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -84,8 +75,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/mystrip.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="505">
-              <caret line="38" column="52" selection-start-line="38" selection-start-column="52" selection-end-line="38" selection-end-column="52" />
+            <state relative-caret-position="577">
+              <caret line="42" column="29" lean-forward="true" selection-start-line="42" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -93,7 +84,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/network.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-35">
+            <state>
               <caret column="13" selection-start-column="13" selection-end-column="13" />
             </state>
           </provider>
@@ -103,10 +94,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>hp -=</find>
       <find>player.Player</find>
       <find>play</find>
       <find>pal</find>
+      <find>hp -=</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -117,19 +108,19 @@
       <list>
         <option value="$PROJECT_DIR$/modules/gamemaker_functions.py" />
         <option value="$PROJECT_DIR$/modules/network.py" />
-        <option value="$PROJECT_DIR$/modules/mystrip.py" />
         <option value="$PROJECT_DIR$/modules/bullet.py" />
-        <option value="$PROJECT_DIR$/modules/player.py" />
         <option value="$PROJECT_DIR$/server.py" />
+        <option value="$PROJECT_DIR$/modules/mystrip.py" />
         <option value="$PROJECT_DIR$/client.py" />
+        <option value="$PROJECT_DIR$/modules/player.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-12" />
-    <option name="y" value="-12" />
-    <option name="width" value="1524" />
-    <option name="height" value="1938" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="46" />
+    <option name="y" value="27" />
+    <option name="width" value="1676" />
+    <option name="height" value="1053" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -324,10 +315,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="27" width="1874" height="1053" extended-state="6" />
+    <frame x="46" y="27" width="1676" height="1053" extended-state="1" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14316586" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16031457" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -379,13 +370,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-35">
-          <caret column="13" selection-start-column="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modules/gamemaker_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1062">
@@ -393,10 +377,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/modules/bullet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
-          <caret line="11" column="37" lean-forward="true" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
+          <caret line="11" column="37" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="13" selection-start-column="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/mystrip.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="577">
+          <caret line="42" column="29" lean-forward="true" selection-start-line="42" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="109" column="52" selection-start-line="109" selection-start-column="52" selection-end-line="109" selection-end-column="52" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
@@ -405,45 +416,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/player.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="721">
-          <caret line="90" column="12" selection-start-line="90" selection-start-column="12" selection-end-line="90" selection-end-column="12" />
+        <state relative-caret-position="1945">
+          <caret line="116" column="42" selection-start-line="116" selection-start-column="42" selection-end-line="116" selection-end-column="42" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/mystrip.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="38" column="52" selection-start-line="38" selection-start-column="52" selection-end-line="38" selection-end-column="52" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="55" column="59" lean-forward="true" selection-start-line="55" selection-start-column="59" selection-end-line="55" selection-end-column="59" />
+        <state relative-caret-position="846">
+          <caret line="47" column="27" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="27" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="251" column="35" selection-start-line="251" selection-start-column="32" selection-end-line="251" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#5156#5226#0" />
-            <element signature="e#5293#5364#0" />
-            <element signature="e#5419#5452#0" />
-            <element signature="e#5525#5613#0" />
-            <element signature="e#5650#5980#0" />
-            <element signature="e#9446#9517#0" />
-            <element signature="e#9567#9698#0" />
-            <element signature="e#9846#10028#0" />
           </folding>
         </state>
       </provider>
