@@ -14,15 +14,13 @@ class PlayerInit(object):
         self.dmg = p.dmg
         self.bulletspeed = p.bulletspeed
         self.ready_to_shot = p.ready_to_shot
-        self.remaining_reload = p.remaining_reload
         self.gun_is_reloaded = p.gun_is_reloaded
 
 
 class PlayerLite(object):
-    def __init__(self, y, hp, remaining_reload, gun_is_reloaded):
+    def __init__(self, y, hp, gun_is_reloaded):
         self.y = y
         self.hp = hp
-        self.remaining_reload = remaining_reload
         self.gun_is_reloaded = gun_is_reloaded
 
 
@@ -32,7 +30,7 @@ def my_stripInit(player):
 
 
 def my_stripLite(player):
-    new_p = PlayerLite(player.y, player.hp, player.remaining_reload, player.gun_is_reloaded)
+    new_p = PlayerLite(player.y, player.hp, player.gun_is_reloaded)
     return new_p
 
 
@@ -45,11 +43,10 @@ def un_stripLite(player, self):
     self.player2.y = player.y
     self.player2.hp = player.hp
     self.player2.ready_to_shot = True if self.player2.gun_is_reloaded and not player.gun_is_reloaded else self.player2.ready_to_shot
-    self.player2.gun_is_reloaded = player.gun_is_reloaded or player.remaining_reload < 0.1
+    self.player2.gun_is_reloaded = player.gun_is_reloaded
 
 
 def server_strip(p_old, p_new):
     p_old.y = p_new.y
     p_old.hp = p_new.hp
     p_old.gun_is_reloaded = p_new.gun_is_reloaded
-    p_old.remaining_reload = p_new.remaining_reload
