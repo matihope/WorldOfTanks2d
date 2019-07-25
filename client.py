@@ -18,13 +18,14 @@ class GameWindow(pyglet.window.Window):
         self.keys = pyglet.window.key.KeyStateHandler()
         self.push_handlers(self.keys)
 
-        self.current_screen = 0  # 0=Menu, 1=Game
+        self.current_screen = 0  # 0=Menu, 1=Game 2=Stats
         self.ip = '192.168.0.11'
         self.port = 5555
         self.n = None
         self.this_client_id = 0
 
         self.game_mode = 'OFFLINE'
+        self.tank_type_list = ['HEAVY', 'MEDIUM', 'LIGHT', 'DESTROYER']
         self.p1_tank_type = 'HEAVY'
         self.p2_tank_type = 'HEAVY'
 
@@ -36,6 +37,7 @@ class GameWindow(pyglet.window.Window):
         self.menu_batch = pyglet.graphics.Batch()
         self.main_batch = pyglet.graphics.Batch()
         self.add_ons_1 = pyglet.graphics.Batch()
+        self.stats_batch = pyglet.graphics.Batch()
 
         self.mouse_left_is_pressed = False
         self.mouse_x, self.mouse_y = 0, 0
@@ -68,10 +70,63 @@ class GameWindow(pyglet.window.Window):
             'gamemode': button.Button('button.png', self.game_mode, x=self.width/2, y=400),
             'p1_tank_type': button.Button('button.png', f'P1:{self.p1_tank_type}', x=self.width/2-200, y=250),
             'p2_tank_type': button.Button('button.png', f'P2:{self.p2_tank_type}', x=self.width/2+200, y=250),
-            'play': button.Button('button.png', 'PLAY!', x=self.width/2, y=100)
+            'play': button.Button('button.png', 'PLAY!', x=self.width/2, y=100),
+            'stats': button.Button('button.png', 'Tank stats', x=150, y=50)
         }
+        self.back_from_stats_button = button.Button('button.png', 'Back to menu', x=150, y=50)
         self.buttons['set_ip'].active = False
         self.buttons['set_ip'].visible = False
+
+        self.logo_lbl_bg = pyglet.text.Label(text='World Of Tanks 2D', anchor_x='center', anchor_y='center',
+                                             font_name='Born2bSportyV2', font_size=96, color=(5, 5, 5, 255),
+                                             x=self.width / 2 + 2, y=650 - 2, batch=self.stats_batch)
+        self.logo_lbl = pyglet.text.Label(text='World Of Tanks 2D', anchor_x='center', anchor_y='center',
+                                          font_name='Born2bSportyV2', font_size=96, color=(109, 176, 176, 255),
+                                          x=self.width / 2, y=650, batch=self.stats_batch)
+
+        self.heavy_stats_lbl = pyglet.text.Label(anchor_x='center', anchor_y='center', font_name='Born2bSportyV2',
+                                                 multiline=True, width=230, font_size=24,
+                                                 color=(191, 191, 61, 255), batch=self.stats_batch)
+        self.heavy_stats_lbl.x, self.heavy_stats_lbl.y = self.width * 1/5, self.height / 2
+        self.medium_stats_lbl = pyglet.text.Label(anchor_x='center', anchor_y='center', font_name='Born2bSportyV2',
+                                                  multiline=True, width=230, font_size=24,
+                                                  color=(63, 191, 191, 255), batch=self.stats_batch)
+        self.medium_stats_lbl.x, self.medium_stats_lbl.y = self.width * 2/5, self.height / 2
+        self.light_stats_lbl = pyglet.text.Label(anchor_x='center', anchor_y='center', font_name='Born2bSportyV2',
+                                                 multiline=True, width=230, font_size=24,
+                                                 color=(63, 191, 63, 255), batch=self.stats_batch)
+        self.light_stats_lbl.x, self.light_stats_lbl.y = self.width * 3/5, self.height / 2
+        self.destroyer_stats_lbl = pyglet.text.Label(anchor_x='center', anchor_y='center', font_name='Born2bSportyV2',
+                                                     multiline=True, width=230, font_size=24,
+                                                     color=(200, 100, 100, 255), batch=self.stats_batch)
+        self.destroyer_stats_lbl.x, self.destroyer_stats_lbl.y = self.width * 4/5, self.height / 2
+
+        self.heavy_stats_lbl.text = 'HEAVY:              ' \
+                                    'Hp - 3000           ' \
+                                    'Dmg - 400           ' \
+                                    'Bulletspeed - 20    ' \
+                                    'Reload - 3          ' \
+                                    'Spd - 5'
+
+        self.medium_stats_lbl.text = 'MEDIUM:             ' \
+                                     'Hp - 2200           ' \
+                                     'Dmg - 320           ' \
+                                     'Bulletspeed - 15    ' \
+                                     'Reload - 3          ' \
+                                     'Spd - 6'
+
+        self.light_stats_lbl.text = 'LIGHT:              ' \
+                                    'Hp - 1500           ' \
+                                    'Dmg - 240           ' \
+                                    'Bulletspeed - 20    ' \
+                                    'Reload - 3          ' \
+                                    'Spd - 8'
+        self.destroyer_stats_lbl.text = 'DESTROYER:          ' \
+                                        'Hp - 1800           ' \
+                                        'Dmg - 1750          ' \
+                                        'Bulletspeed - 25    ' \
+                                        'Reload - 7          ' \
+                                        'Spd - 5'
 
         threading.Thread(target=self.FPS_COUNTER).start()
         pyglet.clock.schedule_interval(self.game_tick, 1/250)
@@ -83,9 +138,10 @@ class GameWindow(pyglet.window.Window):
 
         # Menu
         if self.current_screen == 0:
-            [button.refresh(self.mouse_x, self.mouse_y, self.mouse_left_is_pressed) for button in self.buttons.values()]
+            [b.refresh(self.mouse_x, self.mouse_y, self.mouse_left_is_pressed) for b in self.buttons.values()]
+            self.back_from_stats_button.refresh(self.mouse_x, self.mouse_y, self.mouse_left_is_pressed)
         # Game
-        if self.current_screen == 1:
+        elif self.current_screen == 1:
             if self.game_mode == 'OFFLINE':
                 self.player1.step(self.keys, dt)
                 self.player2.step(self.keys, dt)
@@ -125,6 +181,10 @@ class GameWindow(pyglet.window.Window):
 
             # 180 100
 
+        # Stats
+        elif self.current_screen == 2:
+            self.back_from_stats_button.refresh(self.mouse_x, self.mouse_y, self.mouse_left_is_pressed)
+
         self.draw_elements()
         if self.end_the_game:
             self.end_the_game = False
@@ -142,9 +202,11 @@ class GameWindow(pyglet.window.Window):
         if self.current_screen == 0:
             [b.draw() for b in self.buttons.values()]
             self.handle_buttons()
+            self.logo_lbl_bg.draw()
+            self.logo_lbl.draw()
 
         # Game
-        if self.current_screen == 1:
+        elif self.current_screen == 1:
             try:
                 self.player1.draw()
                 self.player2.draw()
@@ -152,6 +214,11 @@ class GameWindow(pyglet.window.Window):
                 pass
             self.main_batch.draw()
             self.add_ons_1.draw()
+
+        elif self.current_screen == 2:
+            self.back_from_stats_button.draw()
+            self.handle_buttons()
+            self.stats_batch.draw()
 
         self.message_label.text = self.text_for_message_label
         self.message_label.draw()
@@ -191,18 +258,18 @@ class GameWindow(pyglet.window.Window):
 
     def handle_buttons(self):
         if self.buttons['p1_tank_type'].click:
-            self.p1_tank_type = 'DESTROYER' if self.p1_tank_type == 'HEAVY' else 'HEAVY'
+            self.p1_tank_type = switch(self.p1_tank_type, self.tank_type_list)
             self.buttons['p1_tank_type'].txt_label.text = f'P1:{self.p1_tank_type}'
 
-        if self.buttons['p2_tank_type'].click:
-            self.p2_tank_type = 'DESTROYER' if self.p2_tank_type == 'HEAVY' else 'HEAVY'
+        elif self.buttons['p2_tank_type'].click:
+            self.p2_tank_type = switch(self.p2_tank_type, self.tank_type_list)
             self.buttons['p2_tank_type'].txt_label.text = f'P2:{self.p2_tank_type}'
 
-        if self.buttons['set_ip'].click:
+        elif self.buttons['set_ip'].click:
             self.ip = input('Give me new ip:')
             self.buttons['set_ip'].txt_label.text = f'IP:{self.ip}'
 
-        if self.buttons['gamemode'].click:
+        elif self.buttons['gamemode'].click:
             self.game_mode = 'OFFLINE' if self.game_mode == 'ONLINE' else 'ONLINE'
             self.buttons['gamemode'].txt_label.text = self.game_mode
             self.buttons['set_ip'].active = not self.buttons['set_ip'].active
@@ -216,7 +283,7 @@ class GameWindow(pyglet.window.Window):
                 self.buttons['p2_tank_type'].active = True
                 self.buttons['p2_tank_type'].visible = True
 
-        if self.buttons['play'].click:
+        elif self.buttons['play'].click:
             if self.game_mode == 'OFFLINE':
                 self.player1 = player.Player(self.tank_image.anchor_x, self.height-self.tank_image.anchor_y,
                                              self.p1_tank_type, 0, self.game_mode, self.height, img=self.tank_image)
@@ -232,12 +299,12 @@ class GameWindow(pyglet.window.Window):
 
                     if self.this_client_id == 0:
                         self.player1 = player.Player(self.tank_image.anchor_x, self.height-self.tank_image.anchor_y,
-                                                     self.p1_tank_type, 0, self.game_mode, self.height, in_online_main_player=True,
-                                                     img=self.tank_image)
+                                                     self.p1_tank_type, 0, self.game_mode, self.height,
+                                                     in_online_main_player=True, img=self.tank_image)
                     else:
                         self.player1 = player.Player(self.width-self.tank_image.anchor_x, self.tank_image.anchor_y,
-                                                     self.p1_tank_type, 1, self.game_mode, self.height, in_online_main_player=True,
-                                                     img=self.tank_image)
+                                                     self.p1_tank_type, 1, self.game_mode, self.height,
+                                                     in_online_main_player=True, img=self.tank_image)
                     
                     self.n.send_player(self.player1)
                     self.n.p2(self)
@@ -247,6 +314,17 @@ class GameWindow(pyglet.window.Window):
 
                 else:
                     self.display_message('Set your ip first!', 3)
+
+        elif self.buttons['stats'].click:
+            self.current_screen = 2
+
+        elif self.back_from_stats_button.click:
+            self.current_screen = 0
+
+        for btn in self.buttons.values():
+            if btn.long_press:
+                continue
+            btn.click = False
 
     def display_message(self, message, t):
         threading.Thread(target=self.threaded_msg, args=(message, t, )).start()
@@ -277,6 +355,15 @@ class GameWindow(pyglet.window.Window):
     def make_enemy_bullet(self):
         self.bullet_list.append(bullet.Bullet(self.player2, img=self.bullet_image, batch=self.main_batch))
         self.player2.ready_to_shot = False
+
+
+def switch(to_switch, opt_list):
+    curr = opt_list.index(to_switch)
+    if curr == len(opt_list)-1:
+        new_value = opt_list[0]
+    else:
+        new_value = opt_list[curr+1]
+    return new_value
 
 
 def center_image(image):
