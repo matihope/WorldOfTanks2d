@@ -74,7 +74,6 @@ class Player(pyglet.sprite.Sprite):
             moveV = int(keys[key.W]) - int(keys[key.S])
 
         moveV *= self.spd * self.dt * 40
-
         # Clamping move area
         if self.y - self.image.anchor_y + moveV > 0 and \
            self.y + self.image.anchor_y + moveV < self.window_height:
