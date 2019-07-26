@@ -115,11 +115,13 @@ class Player(pyglet.sprite.Sprite):
         self.gun_is_reloaded = True
 
     def move(self, keys):
-        gm = True if self.game_mode == 'OFFLINE' else False
-        if self.player_id == 0:
-            moveV = int(keys[key.W] or (keys[key.UP] if gm else False)) - int(keys[key.S] or (keys[key.DOWN] if gm else False))
+        if self.game_mode == 'OFFLINE':
+            if self.player_id == 0:
+                moveV = int(keys[key.W]) - int(keys[key.S])
+            else:
+                moveV = int(keys[key.I]) - int(keys[key.K])
         else:
-            moveV = int(keys[key.I]) - int(keys[key.K])
+            moveV = int(keys[key.W] or keys[key.UP]) - int(keys[key.S] or keys[key.DOWN])
 
         moveV *= self.spd * self.dt * 40
         # Clamping move area
