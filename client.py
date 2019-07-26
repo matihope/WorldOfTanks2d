@@ -8,6 +8,7 @@ import time
 
 pyglet.resource.path = ["resources"]
 pyglet.resource.reindex()
+# To make it work with PyInstaller, swap pyglet.resource.image with pyglet.image.load(#HERE you type path, ex 'resources\\image.png')
 
 
 class GameWindow(pyglet.window.Window):
