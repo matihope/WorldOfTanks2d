@@ -4,7 +4,7 @@ from _thread import *
 from modules import mystrip
 
 
-server = '192.168.0.11'
+server = input('Give me ip:')
 port = 5555
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
