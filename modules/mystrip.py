@@ -1,44 +1,52 @@
-import pyglet
-import sys
 from modules import player
 
 
 class PlayerInit(object):
-    def __init__(self, x, y, width, height, tank_type, player_id, shot):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.tank_type = tank_type
-        self.player_id = player_id
-        self.ready_to_shot = shot
+    def __init__(self, p):
+        self.x = p.x
+        self.y = p.y
+        self.hp_max = p.hp_max
+        self.hp = p.hp
+        self.width = p.width
+        self.height = p.height
+        self.tank_type = p.tank_type
+        self.player_id = p.player_id
+        self.dmg = p.dmg
+        self.bulletspeed = p.bulletspeed
+        self.ready_to_shot = p.ready_to_shot
+        self.gun_is_reloaded = p.gun_is_reloaded
 
 
 class PlayerLite(object):
-    def __init__(self, y, shot):
+    def __init__(self, y, hp, gun_is_reloaded):
         self.y = y
-        self.ready_to_shot = shot
+        self.hp = hp
+        self.gun_is_reloaded = gun_is_reloaded
 
 
 def my_stripInit(player):
-    new_p = PlayerInit(player.x, player.y, player.width, player.height, player.tank_type, player.player_id, player.ready_to_shot)
+    new_p = PlayerInit(player)
     return new_p
 
 
 def my_stripLite(player):
-    new_p = PlayerLite(player.y, player.ready_to_shot)
+    new_p = PlayerLite(player.y, player.hp, player.gun_is_reloaded)
     return new_p
 
 
 def un_stripInit(p, self):
     self.player2 = player.Player(p.x, p.y, p.tank_type, p.player_id, 'ONLINE', self.height,
-                                 img=self.tank_image, batch=self.main_batch)
+                                 img=self.tank_image)
 
 
 def un_stripLite(player, self):
     self.player2.y = player.y
-    self.player2.ready_to_shot = player.ready_to_shot
+    self.player2.hp = player.hp
+    self.player2.ready_to_shot = True if self.player2.gun_is_reloaded and not player.gun_is_reloaded else self.player2.ready_to_shot
+    self.player2.gun_is_reloaded = player.gun_is_reloaded
 
 
 def server_strip(p_old, p_new):
-    p_old.y, p_old.ready_to_shot = p_new.y, p_new.ready_to_shot
+    p_old.y = p_new.y
+    p_old.hp = p_new.hp
+    p_old.gun_is_reloaded = p_new.gun_is_reloaded

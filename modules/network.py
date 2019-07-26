@@ -39,9 +39,6 @@ class Network:
     def trade(self, player, client):
         try:
             self.client.send(pickle.dumps(mystrip.my_stripLite(player)))
-            return mystrip.un_stripLite(pickle.loads(self.client.recv(1024)), client)
+            return mystrip.un_stripLite(pickle.loads(self.client.recv(1024 * 2)), client)
         except socket.error as e:
             print(e)
-        except:
-            exit()
-
