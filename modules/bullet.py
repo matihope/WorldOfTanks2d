@@ -25,4 +25,3 @@ class Bullet(pyglet.sprite.Sprite):
         if gmf.objects_are_colliding(self, p):
             self.hit = True
             self.visible = False
-            print('Hit!')

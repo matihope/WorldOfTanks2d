@@ -146,6 +146,7 @@ class GameWindow(pyglet.window.Window):
                 self.player1.step(self.keys, dt)
                 self.player2.step(self.keys, dt)
 
+                # Player1 shot is outside this if statement, because it works the same for both ONLINE and OFFLINE
                 # Player2 shot
                 if self.player2.ready_to_shot:
                     self.bullet_list.append(bullet.Bullet(self.player2, img=self.bullet_image, batch=self.main_batch))
@@ -153,10 +154,16 @@ class GameWindow(pyglet.window.Window):
                 for b in self.bullet_list:
                     if b.hit:
                         if b.player_id == 0:
-                            self.player1.hp -= b.dmg
-                        else:
                             self.player2.hp -= b.dmg
+                        else:
+                            self.player1.hp -= b.dmg
                         self.bullet_list.remove(b)
+
+                if self.player1.hp <= 0 or self.player2.hp <= 0:
+                    winner = 'P2 WON!' if self.player1.hp <= 0 else 'P1 WON!'
+                    self.text_for_message_label = winner
+                    self.display_message(winner, 3)
+                    self.end_the_game = True
             else:
                 self.player1.step(self.keys, dt)
 

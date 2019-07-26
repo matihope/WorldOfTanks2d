@@ -18,8 +18,6 @@ class Player(pyglet.sprite.Sprite):
         self.game_mode = game_mode
         self.window_height = window_height
         self.dt = None
-
-        self.game_mode = 'SINGLEPLAYER'
         self.in_online_main_player = in_online_main_player
 
         self.tank_type = tank_type
@@ -97,7 +95,7 @@ class Player(pyglet.sprite.Sprite):
 
         key_shot = False
         if self.game_mode == 'OFFLINE':
-            if (self.player_id == 0 and (key_spacebar or keys[key.D])) or \
+            if (self.player_id == 0 and keys[key.D]) or \
                (self.player_id == 1 and keys[key.J]):
                 key_shot = True
         else:
@@ -115,13 +113,13 @@ class Player(pyglet.sprite.Sprite):
             self.remaining_reload -= self.dt
             time.sleep(self.dt)
         self.gun_is_reloaded = True
-        print('Reloaded!')
 
     def move(self, keys):
-        if self.player_id == 0 or self.game_mode == 'ONLINE':
-            moveV = int(keys[key.W] or keys[key.UP]) - int(keys[key.S] or keys[key.DOWN])
+        gm = True if self.game_mode == 'OFFLINE' else False
+        if self.player_id == 0:
+            moveV = int(keys[key.W] or (keys[key.UP] if gm else False)) - int(keys[key.S] or (keys[key.DOWN] if gm else False))
         else:
-            moveV = int(keys[key.W]) - int(keys[key.S])
+            moveV = int(keys[key.I]) - int(keys[key.K])
 
         moveV *= self.spd * self.dt * 40
 
@@ -131,7 +129,6 @@ class Player(pyglet.sprite.Sprite):
             self.y += moveV
 
     def shot(self):
-        print('Shot!')
         self.ready_to_shot = True
 
     def update_labels(self):
@@ -167,9 +164,9 @@ class Player(pyglet.sprite.Sprite):
         self.vertex_list_hp_bar_hp.vertices = [x - 50, y + 23, x - 50 + hp_on_bar, y + 23, x - 50 + hp_on_bar, y + 3,
                                                x - 50, y + 3]
 
-        if self.hit_dmg >= self.hp:
+        if self.hit_dmg > self.hp:
             # Speed of smalling the hit_dmg bar
-            self.hit_dmg -= int(self.hp_max / 500)
+            self.hit_dmg = max(self.hp, self.hit_dmg-int(self.hp_max/500))
 
             dmg_on_bar = int(100 * (self.hit_dmg / self.hp_max))
             self.vertex_list_hp_bar_hit.vertices = [x - 50, y + 23, x - 50 + dmg_on_bar, y + 23,

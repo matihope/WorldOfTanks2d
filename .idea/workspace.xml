@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78e7f3cb-a67b-4755-91fc-acee389bd1cf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/player.py" afterDir="false" />
     </list>
@@ -184,7 +182,14 @@
       <option name="project" value="LOCAL" />
       <updated>1563743326331</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Game GUI update">
+      <created>1564052112530</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1564052112530</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -201,7 +206,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -211,6 +218,7 @@
     <MESSAGE value="Server and game dev 17-07-2019" />
     <MESSAGE value="Server and game dev 21-07-2019" />
     <MESSAGE value="Server and game dev 21-07-2019 v.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Server and game dev 21-07-2019 v.2" />
+    <MESSAGE value="Game GUI update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Game GUI update" />
   </component>
 </project>
