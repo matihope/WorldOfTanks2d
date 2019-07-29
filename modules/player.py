@@ -43,7 +43,7 @@ class Player(pyglet.sprite.Sprite):
             self.hp_max = 1500
             self.dmg = 240
             self.bulletspeed = 20
-            self.reload = 2
+            self.reload = 1.5
             self.spd = 8
 
         elif self.tank_type == 'DESTROYER':

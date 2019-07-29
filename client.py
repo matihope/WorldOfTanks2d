@@ -120,7 +120,7 @@ class GameWindow(pyglet.window.Window):
                                     'Hp - 1500           ' \
                                     'Dmg - 240           ' \
                                     'Bulletspeed - 20    ' \
-                                    'Reload - 3          ' \
+                                    'Reload - 1.5        ' \
                                     'Spd - 8'
         self.destroyer_stats_lbl.text = 'DESTROYER:          ' \
                                         'Hp - 1800           ' \
