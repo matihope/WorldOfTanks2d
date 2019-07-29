@@ -381,5 +381,5 @@ def center_image(image):
 
 
 if __name__ == '__main__':
-    window = GameWindow(1300, 800, resizable=False, vsync=True, caption='WorldOfTanks2d')
+    window = GameWindow(1000, 800, resizable=False, vsync=True, caption='WorldOfTanks2d')
     pyglet.app.run()
